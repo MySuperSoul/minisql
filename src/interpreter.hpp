@@ -12,13 +12,15 @@ using namespace std;
 class InterPreter
 {
 public:
-    string Read_input(); //¶ÁÈëÊäÈëµÄÖµ
+    string Read_input(); //è¯»å…¥è¾“å…¥çš„å€¼
     string initial_sentense(string old_sql);
     string Process(string sql);
     string replace_allvalues(string sql, string old_values, string new_values);
     string get_first_word(string sql, string split);
     string del_first_word(string sql, string split);
     string split(string value);
+    string get_split_string_value(string sql);
+	string get_current_value(string sql, string split);
     
     SqlCommand drop_database(string sql);
     SqlCommand drop_table(string sql);
@@ -36,7 +38,7 @@ public:
     SqlCommand create_database(string sql);
     SqlCommand update_table(string sql);
     
-    SqlCommand Final_expression(string sql); //¸ù¾İÊäÈëÀ´ÅĞ¶Ïµ½µ×ÊÇÄÄÖÖĞÎÊ½
+    SqlCommand Final_expression(string sql); //æ ¹æ®è¾“å…¥æ¥åˆ¤æ–­åˆ°åº•æ˜¯å“ªç§å½¢å¼
 };
 
 #endif // !INTERPRETER_H
