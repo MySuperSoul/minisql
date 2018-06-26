@@ -1,15 +1,15 @@
 #include"interpreter.hpp"
 
-/*¶ÁÈëÖ®ºó½øĞĞµÄÔ¤´¦Àí*/
+/*è¯»å…¥ä¹‹åè¿›è¡Œçš„é¢„å¤„ç†*/
 string InterPreter::Read_input()
 {
-    string sql = ""; //³õÊ¼Óï¾ä
+    string sql = ""; //åˆå§‹è¯­å¥
     string temp;
     
     while (1)
     {
-        cin >> temp; //¶ÁÈëÊäÈëµÄÒ»ÁĞ
-        sql += temp + " "; //Ô¤´¦ÀíÎª¿Õ¸ñĞÎÊ½
+        cin >> temp; //è¯»å…¥è¾“å…¥çš„ä¸€åˆ—
+        sql += temp + " "; //é¢„å¤„ç†ä¸ºç©ºæ ¼å½¢å¼
         
         if (sql.at(sql.length() - 2) == ';')
         {
@@ -23,7 +23,7 @@ string InterPreter::Read_input()
     return sql;
 }
 
-/*Ö÷ÒªÊÇÎªÁË´ÓfileÀïÃæ»ñÈ¡sqlÓï¾ä*/
+/*ä¸»è¦æ˜¯ä¸ºäº†ä»fileé‡Œé¢è·å–sqlè¯­å¥*/
 string InterPreter::initial_sentense(string old_sql)
 {
     if (old_sql.at(old_sql.length() - 1) == ';')
@@ -37,7 +37,7 @@ string InterPreter::initial_sentense(string old_sql)
     return "error";
 }
 
-/*Ô¤´¦ÀíÄ£¿é*/
+/*é¢„å¤„ç†æ¨¡å—*/
 string InterPreter::Process(string sql)
 {
     sql = replace_allvalues(sql, "( ", "(");
@@ -49,7 +49,7 @@ string InterPreter::Process(string sql)
     return sql;
 }
 
-/*Ìæ´úÖµµÄº¯Êı*/
+/*æ›¿ä»£å€¼çš„å‡½æ•°*/
 string InterPreter::replace_allvalues(string sql, const string old_values, const string new_values)
 {
     while (1)
@@ -66,7 +66,7 @@ string InterPreter::replace_allvalues(string sql, const string old_values, const
     return sql;
 }
 
-/*»ñÈ¡µ½µÚÒ»¸öword*/
+/*è·å–åˆ°ç¬¬ä¸€ä¸ªword*/
 string InterPreter::get_first_word(string sql, string split)
 {
     int start_position = sql.find_first_not_of(split);
@@ -74,15 +74,15 @@ string InterPreter::get_first_word(string sql, string split)
         return "";
     int end_position = sql.find_first_of(split);
     if (end_position < 0)
-        return sql.substr(start_position, split.length()); //Èç¹ûÃ»ÓĞÕÒµ½µÄ»°£¬·µ»Ø×îºóÒ»¸ö·ûºÅ£¬Ò»°ãÎª·ÖºÅ½áÎ²
+        return sql.substr(start_position, split.length()); //å¦‚æœæ²¡æœ‰æ‰¾åˆ°çš„è¯ï¼Œè¿”å›æœ€åä¸€ä¸ªç¬¦å·ï¼Œä¸€èˆ¬ä¸ºåˆ†å·ç»“å°¾
     
     string temp = sql.substr(start_position, end_position - start_position);
-    //transform(temp.begin(), temp.end(), temp.begin(), ::tolower); //×ª»»ÎªĞ¡Ğ´Ö®ºóÊä³ö
+    //transform(temp.begin(), temp.end(), temp.begin(), ::tolower); //è½¬æ¢ä¸ºå°å†™ä¹‹åè¾“å‡º
     
     return temp;
 }
 
-/*É¾³ıµôµÚÒ»¸öwordÖ®ºóµÄsql×Ö·û´®*/
+/*åˆ é™¤æ‰ç¬¬ä¸€ä¸ªwordä¹‹åçš„sqlå­—ç¬¦ä¸²*/
 string InterPreter::del_first_word(string sql, string split)
 {
     int start_position = sql.find_first_of(split);
@@ -92,7 +92,7 @@ string InterPreter::del_first_word(string sql, string split)
     return sql;
 }
 
-/*²âÊÔµÄÊÇdrop database A;*/
+/*æµ‹è¯•çš„æ˜¯drop database A;*/
 SqlCommand InterPreter::drop_database(string sql)
 {
     SqlCommand temp;
@@ -100,7 +100,7 @@ SqlCommand InterPreter::drop_database(string sql)
     sql = del_first_word(sql, " ");
     string attr = get_first_word(sql, " ");
     
-    if (attr == ";") //Î´ÊäÈëÊı¾İ¿âÃû
+    if (attr == ";") //æœªè¾“å…¥æ•°æ®åº“å
     {
         temp.set_command_type(SQL_ERROR);
         return temp;
@@ -111,7 +111,7 @@ SqlCommand InterPreter::drop_database(string sql)
     return temp;
 }
 
-/*²âÊÔµÄÊÇdrop table A;*/
+/*æµ‹è¯•çš„æ˜¯drop table A;*/
 SqlCommand InterPreter::drop_table(string sql)
 {
     SqlCommand temp;
@@ -130,7 +130,7 @@ SqlCommand InterPreter::drop_table(string sql)
     return temp;
 }
 
-/*²âÊÔµÄÊÇdrop index A;*/
+/*æµ‹è¯•çš„æ˜¯drop index A;*/
 SqlCommand InterPreter::drop_index(string sql)
 {
     SqlCommand temp;
@@ -149,7 +149,7 @@ SqlCommand InterPreter::drop_index(string sql)
     return temp;
 }
 
-/*²âÊÔµÄÊÇ quit;*/
+/*æµ‹è¯•çš„æ˜¯ quit;*/
 SqlCommand InterPreter::quit()
 {
     SqlCommand temp;
@@ -158,12 +158,12 @@ SqlCommand InterPreter::quit()
     return temp;
 }
 
-/*²âÊÔµÄÊÇ execfile A;*/
+/*æµ‹è¯•çš„æ˜¯ execfile A;*/
 SqlCommand InterPreter::execfile(string sql)
 {
     SqlCommand temp;
     
-    sql = del_first_word(sql, " "); //É¾³ı¿Õ¸ñ¼°¿Õ¸ñÖ®Ç°µÄexecfile
+    sql = del_first_word(sql, " "); //åˆ é™¤ç©ºæ ¼åŠç©ºæ ¼ä¹‹å‰çš„execfile
     string filename = get_first_word(sql, " ");
     
     if (filename == ";")
@@ -172,45 +172,45 @@ SqlCommand InterPreter::execfile(string sql)
         return temp;
     }
     
-    temp.set_file_name(filename); //ÉèÖÃÎªĞèÒªÖ´ĞĞµÄsqlÎÄ¼ş
+    temp.set_file_name(filename); //è®¾ç½®ä¸ºéœ€è¦æ‰§è¡Œçš„sqlæ–‡ä»¶
     temp.set_command_type(SQL_EXECFILE);
     return temp;
 }
 
-/*²âÊÔµÄÊÇ create index A(index_name) on B(±íÃû) (C) ->ÊôĞÔÃû;*/
+/*æµ‹è¯•çš„æ˜¯ create index A(index_name) on B(è¡¨å) (C) ->å±æ€§å;*/
 SqlCommand InterPreter::create_index(string sql)
 {
     SqlCommand temp;
-    sql = del_first_word(sql, " "); //É¾µôcreate
-    sql = del_first_word(sql, " "); //É¾µôindex
+    sql = del_first_word(sql, " "); //åˆ æ‰create
+    sql = del_first_word(sql, " "); //åˆ æ‰index
     
     string index_name = get_first_word(sql, " ");
     
-    sql = del_first_word(sql, " "); //É¾µôindex_name
+    sql = del_first_word(sql, " "); //åˆ æ‰index_name
     
-    /*ÅĞ¶ÏÊÇ·ñÎª on*/
+    /*åˆ¤æ–­æ˜¯å¦ä¸º on*/
     if (get_first_word(sql, " ") != "on")
     {
         temp.set_command_type(SQL_ERROR);
         return temp;
     }
     
-    sql = del_first_word(sql, " "); //Èç¹ûÊÇonµÄ»°É¾µô¼ÌĞøÏòÏÂ
+    sql = del_first_word(sql, " "); //å¦‚æœæ˜¯onçš„è¯åˆ æ‰ç»§ç»­å‘ä¸‹
     
     string table_name = get_first_word(sql, " ");
     sql = del_first_word(sql, " ");
     
-    /*ÅĞ¶ÏÊÇ·ñ·ûºÏ()ĞÎÊ½*/
+    /*åˆ¤æ–­æ˜¯å¦ç¬¦åˆ()å½¢å¼*/
     int start_dis = sql.find("(");
     int end_dis = sql.find(")");
     
-    if (start_dis == -1 || end_dis == -1 || (end_dis < start_dis)) //ĞÎÊ½ÓĞÎÊÌâ£¬Ö±½Ó·µ»Ø
+    if (start_dis == -1 || end_dis == -1 || (end_dis < start_dis)) //å½¢å¼æœ‰é—®é¢˜ï¼Œç›´æ¥è¿”å›
     {
         temp.set_command_type(SQL_ERROR);
         return temp;
     }
     
-    /*µÃµ½ÊôĞÔÃû*/
+    /*å¾—åˆ°å±æ€§å*/
     int start = sql.find_first_not_of("()");
     int end = sql.find_last_of("()");
     string attribute_name = sql.substr(start, end - start);
@@ -224,13 +224,13 @@ SqlCommand InterPreter::create_index(string sql)
     return temp;
 }
 
-/*²âÊÔµÄÊÇ insert into table values ('A', 'B', 'C' ...) ;*/
+/*æµ‹è¯•çš„æ˜¯ insert into table values ('A', 'B', 'C' ...) ;*/
 SqlCommand InterPreter::insert_values(string sql)
 {
     SqlCommand temp;
     sql = del_first_word(sql, " ");
     
-    if (get_first_word(sql, " ") != "into") //²»ÊÇinto£¬Ö±½Ó±¨´í
+    if (get_first_word(sql, " ") != "into") //ä¸æ˜¯intoï¼Œç›´æ¥æŠ¥é”™
     {
         temp.set_command_type(SQL_ERROR);
         return temp;
@@ -244,33 +244,33 @@ SqlCommand InterPreter::insert_values(string sql)
     
     while (get_first_word(sql, " )") != ";")
     {
-        string value = get_first_word(sql, " ),");
-        value = split(value);
-        temp.push_col_values_vector(value);
-        sql = del_first_word(sql, ",)");
+        string value = get_current_value(sql, ",)");
+		value = split(value);
+		temp.push_col_values_vector(value);
+		sql = del_first_word(sql, ",)");
     }
     
     temp.set_command_type(SQL_INSERT_INTO);
     return temp;
 }
 
-/*²âÊÔµÄÊÇdelete from t1 where id < 4 and salary > 3000.00; ¸ñÊ½ÏŞ¶¨...*/
+/*æµ‹è¯•çš„æ˜¯delete from t1 where id < 4 and salary > 3000.00; æ ¼å¼é™å®š...*/
 SqlCommand InterPreter::delete_from(string sql)
 {
     SqlCommand temp;
     sql = del_first_word(sql, " ");
     
-    if (get_first_word(sql, " ") != "from") //²»ÊÇfrom£¬Ö±½Ó±¨´í
+    if (get_first_word(sql, " ") != "from") //ä¸æ˜¯fromï¼Œç›´æ¥æŠ¥é”™
     {
         temp.set_command_type(SQL_ERROR);
         return temp;
     }
     
-    sql = del_first_word(sql, " "); //Ìø¹ıdelete ºÍ from
+    sql = del_first_word(sql, " "); //è·³è¿‡delete å’Œ from
     
     string table_name = get_first_word(sql, " ");
     temp.set_table_name(table_name);
-    sql = del_first_word(sql, " "); //Ìø¹ıtableÕâÀï
+    sql = del_first_word(sql, " "); //è·³è¿‡tableè¿™é‡Œ
     
     if (get_first_word(sql, " ") == "where")
     {
@@ -285,10 +285,10 @@ SqlCommand InterPreter::delete_from(string sql)
             temp.push_command_op_vector(op_value);
             sql = del_first_word(sql, " ");
             
-            string right_value = get_first_word(sql, " ");
-            right_value = split(right_value);
-            temp.push_command_right_vector(right_value);
-            sql = del_first_word(sql, " ");             //Õâ²¿·ÖÖ÷Òª´¦ÀíµôÁËÌõ¼şÀïÃæµÄ×óÖµ£¬ÓÒÖµºÍÖĞ¼äµÄ±È½ÏÖµ
+            string right_value = get_current_value(sql, " ");
+			right_value = split(right_value);
+			temp.push_command_right_vector(right_value);
+			sql = get_split_string_value(sql);             //è¿™éƒ¨åˆ†ä¸»è¦å¤„ç†æ‰äº†æ¡ä»¶é‡Œé¢çš„å·¦å€¼ï¼Œå³å€¼å’Œä¸­é—´çš„æ¯”è¾ƒå€¼
             
             if (get_first_word(sql, " ") == "and")
                 sql = del_first_word(sql, " ");
@@ -299,13 +299,13 @@ SqlCommand InterPreter::delete_from(string sql)
     return temp;
 }
 
-/*²âÊÔµÄÊÇ select * from student where sage > 20 and sgender = 'F'; ¶¼ÊÇselect* ÀàĞÍ*/
+/*æµ‹è¯•çš„æ˜¯ select * from student where sage > 20 and sgender = 'F'; éƒ½æ˜¯select* ç±»å‹*/
 SqlCommand InterPreter::select_from(string sql)
 {
     SqlCommand temp;
     sql = del_first_word(sql, " ");
     
-    if (sql.find("*") == -1 || sql.find("from") == -1 || sql.find("from") < sql.find("*")) //¶ÔÓÚ* ºÍ fromÓĞ´íÎóµÄ»°£¬Ö±½Ó±¨´í
+    if (sql.find("*") == -1 || sql.find("from") == -1 || sql.find("from") < sql.find("*")) //å¯¹äº* å’Œ fromæœ‰é”™è¯¯çš„è¯ï¼Œç›´æ¥æŠ¥é”™
     {
         temp.set_command_type(SQL_ERROR);
         return temp;
@@ -315,7 +315,7 @@ SqlCommand InterPreter::select_from(string sql)
     sql = del_first_word(sql, " ");
     
     string table_name = get_first_word(sql, " ");
-    temp.set_table_name(table_name); //±íµÄÃû×Ö
+    temp.set_table_name(table_name); //è¡¨çš„åå­—
     sql = del_first_word(sql, " ");
     
     if (get_first_word(sql, " ") == "where")
@@ -331,10 +331,10 @@ SqlCommand InterPreter::select_from(string sql)
             temp.push_command_op_vector(op_value);
             sql = del_first_word(sql, " ");
             
-            string right_value = get_first_word(sql, " ");
+            string right_value = get_current_value(sql, " ");
             right_value = split(right_value);
             temp.push_command_right_vector(right_value);
-            sql = del_first_word(sql, " ");             //Õâ²¿·ÖÖ÷Òª´¦ÀíµôÁËÌõ¼şÀïÃæµÄ×óÖµ£¬ÓÒÖµºÍÖĞ¼äµÄ±È½ÏÖµ
+            sql = get_split_string_value(sql);             //è¿™éƒ¨åˆ†ä¸»è¦å¤„ç†æ‰äº†æ¡ä»¶é‡Œé¢çš„å·¦å€¼ï¼Œå³å€¼å’Œä¸­é—´çš„æ¯”è¾ƒå€¼
             
             if (get_first_word(sql, " ") == "and")
                 sql = del_first_word(sql, " ");
@@ -345,7 +345,7 @@ SqlCommand InterPreter::select_from(string sql)
     return temp;
 }
 
-/*½ÓÏÂÀ´´¦ÀíµÄ½¨±í create table student (sno char(8),sname char(16) unique,sage int,primary key (sno)) ;*/
+/*æ¥ä¸‹æ¥å¤„ç†çš„å»ºè¡¨ create table student (sno char(8),sname char(16) unique,sage int,primary key (sno)) ;*/
 SqlCommand InterPreter::create_table(string sql)
 {
     sql = del_first_word(sql, " ");
@@ -353,13 +353,13 @@ SqlCommand InterPreter::create_table(string sql)
     
     SqlCommand temp;
     string table_name = get_first_word(sql, " (");
-    temp.set_table_name(table_name); //±íµÄÃû×Ö
-    sql = del_first_word(sql, "("); //±£ÁôÏÂ×Ö¶ÎµÄĞÅÏ¢
+    temp.set_table_name(table_name); //è¡¨çš„åå­—
+    sql = del_first_word(sql, "("); //ä¿ç•™ä¸‹å­—æ®µçš„ä¿¡æ¯
     
-    while (get_first_word(sql, " ;").length() != 0) //Ò»Ö±¶Áµ½Ä©Î²
+    while (get_first_word(sql, " ;").length() != 0) //ä¸€ç›´è¯»åˆ°æœ«å°¾
     {
         string expression = get_first_word(sql, ",;");
-        if (get_first_word(expression, " ") == "primary") //¶Áµ½×îºóÒ»ÌõÓï¾äÊÇprimary keyµÄÊ±ºò
+        if (get_first_word(expression, " ") == "primary") //è¯»åˆ°æœ€åä¸€æ¡è¯­å¥æ˜¯primary keyçš„æ—¶å€™
         {
             int i;
             int start = expression.find("(");
@@ -373,7 +373,7 @@ SqlCommand InterPreter::create_table(string sql)
             }
             
             temp.col_special_vector[i] = "primary";
-            break; //Óï¾äÈ«²¿´¦ÀíÍê±Ï£¬ÍË³öÑ­»·
+            break; //è¯­å¥å…¨éƒ¨å¤„ç†å®Œæ¯•ï¼Œé€€å‡ºå¾ªç¯
         }
         else
         {
@@ -382,13 +382,13 @@ SqlCommand InterPreter::create_table(string sql)
             
             expression = del_first_word(expression, " ");
             
-            /*ÅĞ¶ÏÊÇ·ñÎªunique*/
+            /*åˆ¤æ–­æ˜¯å¦ä¸ºunique*/
             if (expression.find("unique") != -1)
                 temp.push_col_special_vector("unique");
             else
                 temp.push_col_special_vector("null");
             
-            /*ÅĞ¶ÏÖµÀàĞÍ*/
+            /*åˆ¤æ–­å€¼ç±»å‹*/
             if (expression.find("int") == 0)
                 temp.push_value_type(0);
             else if (expression.find("float") == 0)
@@ -400,9 +400,9 @@ SqlCommand InterPreter::create_table(string sql)
                 int end = expression.find_first_of(")");
                 string type_value = expression.substr(start, end - start);
                 int value = stoi(type_value);
-                temp.push_value_type(value); //°ÑvalueÖµ·Å½øÈ¥´ú±íµ±Ç°µÄÀàĞÍ
+                temp.push_value_type(value); //æŠŠvalueå€¼æ”¾è¿›å»ä»£è¡¨å½“å‰çš„ç±»å‹
             }
-            else //Èç¹ûÒ»Ïî¶¼Ã»ÓĞÆ¥Åäµ½£¬Ö±½Óerror
+            else //å¦‚æœä¸€é¡¹éƒ½æ²¡æœ‰åŒ¹é…åˆ°ï¼Œç›´æ¥error
             {
                 temp.set_command_type(SQL_ERROR);
                 return temp;
@@ -416,15 +416,15 @@ SqlCommand InterPreter::create_table(string sql)
     return temp;
 }
 
-/*´¦ÀíµÄÊÇuse database ;*/
+/*å¤„ç†çš„æ˜¯use database ;*/
 SqlCommand InterPreter::use_database(string sql)
 {
     SqlCommand temp;
-    sql = del_first_word(sql, " "); //Ìø¹ıµÚÒ»¸öuse
+    sql = del_first_word(sql, " "); //è·³è¿‡ç¬¬ä¸€ä¸ªuse
     
     string database_name = get_first_word(sql, " ");
-    temp.set_database_name(database_name); //ÉèÖÃÊı¾İ¿âµÄÃû³Æ
-    temp.set_command_type(SQL_USE_DATABASE); //ÉèÖÃÃüÁîµÄÀàĞÍÎªuse database
+    temp.set_database_name(database_name); //è®¾ç½®æ•°æ®åº“çš„åç§°
+    temp.set_command_type(SQL_USE_DATABASE); //è®¾ç½®å‘½ä»¤çš„ç±»å‹ä¸ºuse database
     
     sql = del_first_word(sql, " ");
     if (sql != ";")
@@ -432,29 +432,29 @@ SqlCommand InterPreter::use_database(string sql)
     return temp;
 }
 
-/*´¦ÀíµÄÊÇshow database;*/
+/*å¤„ç†çš„æ˜¯show database;*/
 SqlCommand InterPreter::show_databases(string sql)
 {
     SqlCommand temp;
-    temp.set_command_type(SQL_SHOW_DATABASES); //ÉèÖÃÃüÁîµÄÀàĞÍÎªuse database
+    temp.set_command_type(SQL_SHOW_DATABASES); //è®¾ç½®å‘½ä»¤çš„ç±»å‹ä¸ºuse database
     
     return temp;
 }
 
-/*´¦ÀíµÄÊÇshow tables;*/
+/*å¤„ç†çš„æ˜¯show tables;*/
 SqlCommand InterPreter::show_tables(string sql)
 {
     SqlCommand temp;
-    temp.set_command_type(SQL_SHOW_TABLES); //ÉèÖÃÃüÁîµÄÀàĞÍÎªuse database
+    temp.set_command_type(SQL_SHOW_TABLES); //è®¾ç½®å‘½ä»¤çš„ç±»å‹ä¸ºuse database
     
     return temp;
 }
 
-/*´¦ÀíµÄÊÇ create database A;*/
+/*å¤„ç†çš„æ˜¯ create database A;*/
 SqlCommand InterPreter::create_database(string sql)
 {
     SqlCommand temp;
-    temp.set_command_type(SQL_CREATE_DATABASE); //ÉèÖÃÃüÁîµÄÀàĞÍÎªuse database
+    temp.set_command_type(SQL_CREATE_DATABASE); //è®¾ç½®å‘½ä»¤çš„ç±»å‹ä¸ºuse database
     
     sql = del_first_word(sql, " ");
     sql = del_first_word(sql, " ");
@@ -464,7 +464,7 @@ SqlCommand InterPreter::create_database(string sql)
     return temp;
 }
 
-/*´¦ÀíµÄÊÇ update table set id = 5 where ... and ....;*/
+/*å¤„ç†çš„æ˜¯ update table set id = 5 where ... and ....;*/
 SqlCommand InterPreter::update_table(string sql)
 {
     SqlCommand temp;
@@ -481,11 +481,11 @@ SqlCommand InterPreter::update_table(string sql)
     sql = del_first_word(sql, " "); //skip id
     sql = del_first_word(sql, " "); //skip =
     
-    string value = get_first_word(sql, " ");
+    string value = get_current_value(sql, " ");
     value = split(value);
     temp.set_col_value(value); //put the string value
     
-    sql = del_first_word(sql, " "); //delete col_value
+    sql = get_split_string_value(sql); //delete col_value
     
     if (get_first_word(sql, " ") == "where")
     {
@@ -500,10 +500,10 @@ SqlCommand InterPreter::update_table(string sql)
             temp.push_command_op_vector(op_value);
             sql = del_first_word(sql, " ");
             
-            string right_value = get_first_word(sql, " ");
-            right_value = split(right_value);
-            temp.push_command_right_vector(right_value);
-            sql = del_first_word(sql, " ");             //Õâ²¿·ÖÖ÷Òª´¦ÀíµôÁËÌõ¼şÀïÃæµÄ×óÖµ£¬ÓÒÖµºÍÖĞ¼äµÄ±È½ÏÖµ
+            string right_value = get_current_value(sql, " ");
+			right_value = split(right_value);
+			temp.push_command_right_vector(right_value);
+			sql = get_split_string_value(sql);
             
             if (get_first_word(sql, " ") == "and")
                 sql = del_first_word(sql, " ");
@@ -514,7 +514,7 @@ SqlCommand InterPreter::update_table(string sql)
     return temp;
 }
 
-/*ÅĞ¶ÏÑ¡ÔñÄÄÖÖÀàĞÍ*/
+/*åˆ¤æ–­é€‰æ‹©å“ªç§ç±»å‹*/
 SqlCommand InterPreter::Final_expression(string sql)
 {
     string first_word = get_first_word(sql, " ");
@@ -583,4 +583,49 @@ string InterPreter::split(string value)
     }
     
     return value;
+}
+
+string InterPreter::get_split_string_value(string sql)
+{
+	if (sql.find("'") == 0)
+	{
+		sql = del_first_word(sql, "'");
+		sql = del_first_word(sql, "'");
+		sql = del_first_word(sql, " ");
+		return sql;
+	}
+	else if (sql.find('"') == 0)
+	{
+		string temp = "\"";
+		sql = del_first_word(sql, temp);
+		sql = del_first_word(sql, temp);
+		sql = del_first_word(sql, " ");
+		return sql;
+	}
+	else
+	{
+		sql = del_first_word(sql, " ");
+		return sql;
+	}
+}
+
+string InterPreter::get_current_value(string sql, string split)
+{
+	if (sql.find("'") == 0)
+	{
+		sql = del_first_word(sql, "'");
+		int end_position = sql.find_first_of("'");
+		return sql.substr(0, end_position);
+	}
+	else if (sql.find('"') == 0)
+	{
+		sql = del_first_word(sql, "\"");
+		int end_position = sql.find_first_of("\"");
+		return sql.substr(0, end_position);
+	}
+	else
+	{
+		sql = get_first_word(sql, split);
+		return sql;
+	}
 }
